@@ -53,6 +53,10 @@ flutter:
     - images/rock.png
     - images/paper.png
     - images/scissors.png
+    - images/padrao.png
+    - images/pedra.png
+    - images/papel.png
+    - images/tesoura.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

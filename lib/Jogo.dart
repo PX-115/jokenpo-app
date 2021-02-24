@@ -1,6 +1,6 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class Jogo extends StatefulWidget {
   @override
@@ -8,103 +8,113 @@ class Jogo extends StatefulWidget {
 }
 
 class _JogoState extends State<Jogo> {
+
+  var _escolhaOponente = AssetImage('images/padrao.png');
+
+  var _resultado = 'Escolha uma opção abaixo';
+
+  void _opcaoSelecionada(String escolhaUsuario){
+
+    var opcoes = ['pedra', 'papel', 'tesoura'];
+    var numero = new Random().nextInt(opcoes.length);
+    var escolhaOponente = opcoes[numero];
+
+    switch (escolhaOponente) {
+      case 'pedra': setState(() {
+              this._escolhaOponente = AssetImage('images/pedra.png');
+            });
+        break;
+
+      case 'papel': setState(() {
+              this._escolhaOponente = AssetImage('images/papel.png');
+            });
+        break;
+
+      case 'tesoura': setState(() {
+              this._escolhaOponente = AssetImage('images/tesoura.png');
+            });
+        break;
+    }
+
+    if(
+      escolhaUsuario == 'pedra' && escolhaOponente == 'tesoura' ||
+      escolhaUsuario == 'papel' && escolhaOponente == 'pedra' ||
+      escolhaUsuario == 'tesoura' && escolhaOponente == 'papel'
+    ){ 
+      setState(() {
+        this._resultado = 'Você venceu!';
+            });
+    } else if (
+      escolhaOponente == 'pedra' && escolhaUsuario == 'tesoura' ||
+      escolhaOponente == 'papel' && escolhaUsuario == 'pedra' ||
+      escolhaOponente == 'tesoura' && escolhaUsuario == 'papel'
+    ){
+      setState(() {
+        this._resultado = 'Você perdeu...';
+            });
+    } else {
+      setState(() {
+        this._resultado = 'Empate...';
+            });
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.green,
-          title: Text('Jo-Ken-Po')
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: Text('Jo Ken Po'),
+      ),
+      
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
 
-        body: Center(
-          child: Column(
+          Padding(
+            padding: EdgeInsets.only(top: 32, bottom: 16),
+            child: Text('Escolha do adversário:',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+
+          Image(image: this._escolhaOponente,),
+
+          Padding(
+            padding: EdgeInsets.only(top: 32, bottom: 16),
+            child: Text(this._resultado, //Texto de resultado
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 15),
-                margin: EdgeInsets.only(bottom: 15),
-                child: Text('Escolha do adversário:',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  )
-                ),
+              GestureDetector(
+                onTap: () => _opcaoSelecionada('pedra'),
+                child: Image.asset('images/pedra.png', height: 110),
               ),
-
-              SizedBox(
-                width: 105,
-                height: 105,
-                child: FlatButton(
-                  padding: EdgeInsets.all(16.0),
-                  child: Image.asset('images/rock.png'),
-                  shape: CircleBorder(
-                    side: BorderSide(color: Colors.black54)
-                  ),
-                  onPressed: null,
-                ),
+              GestureDetector(
+                onTap: () => _opcaoSelecionada('papel'),
+                child: Image.asset('images/papel.png', height: 110),
               ),
-
-              Container(
-                margin: EdgeInsets.only(top: 15, bottom: 15),
-                child: Text('Resultado aqui',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  )
-                ),
+              GestureDetector(
+                onTap: () => _opcaoSelecionada('tesoura'),
+                child: Image.asset('images/tesoura.png', height: 110),
               ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  
-                  SizedBox(
-                    width: 105,
-                    height: 105,
-                    child: FlatButton(
-                      padding: EdgeInsets.all(16.0),
-                      child: Image.asset('images/rock.png'),
-                      shape: CircleBorder(
-                        side: BorderSide(color: Colors.black54)
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-
-                  SizedBox(width: 10,),
-
-                  SizedBox(
-                    width: 105,
-                    height: 105,
-                    child: FlatButton(
-                      padding: EdgeInsets.all(16.0),
-                      child: Image.asset('images/paper.png'),
-                      shape: CircleBorder(
-                        side: BorderSide(color: Colors.black54)
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-
-                  SizedBox(width: 10,),
-
-                  SizedBox(
-                    width: 105,
-                    height: 105,
-                    child: FlatButton(
-                      padding: EdgeInsets.all(16.0),
-                      child: Image.asset('images/scissors.png'),
-                      shape: CircleBorder(
-                        side: BorderSide(color: Colors.black54)
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-                ],
-              )
-            ]
+            ],
           )
-        )
+        ],
       ),
     );
   }
