@@ -9,112 +9,152 @@ class Jogo extends StatefulWidget {
 
 class _JogoState extends State<Jogo> {
 
-  var _escolhaOponente = AssetImage('images/padrao.png');
+  var _escolhaOponente = AssetImage('images/default.png');
 
-  var _resultado = 'Escolha uma opção abaixo';
+  var _resultado = 'Escolha uma das opções abaixo';
 
-  void _opcaoSelecionada(String escolhaUsuario){
+  void opcaoSelecionada(String escolhaUsuario){
 
     var opcoes = ['pedra', 'papel', 'tesoura'];
-    var numero = new Random().nextInt(opcoes.length);
-    var escolhaOponente = opcoes[numero];
+
+    var numeroOpcao = new Random().nextInt(opcoes.length);
+
+    var escolhaOponente = opcoes[numeroOpcao];
 
     switch (escolhaOponente) {
-      case 'pedra': setState(() {
-              this._escolhaOponente = AssetImage('images/pedra.png');
-            });
+      case 'pedra':
+        setState(() {
+          _escolhaOponente = AssetImage('images/rock.png');
+                });
         break;
-
-      case 'papel': setState(() {
-              this._escolhaOponente = AssetImage('images/papel.png');
-            });
+        case 'papel':
+        setState(() {
+          _escolhaOponente = AssetImage('images/paper.png');
+                });
         break;
-
-      case 'tesoura': setState(() {
-              this._escolhaOponente = AssetImage('images/tesoura.png');
-            });
+        case 'tesoura':
+        setState(() {
+          _escolhaOponente = AssetImage('images/scissors.png');
+                });
         break;
     }
 
-    if(
-      escolhaUsuario == 'pedra' && escolhaOponente == 'tesoura' ||
-      escolhaUsuario == 'papel' && escolhaOponente == 'pedra' ||
-      escolhaUsuario == 'tesoura' && escolhaOponente == 'papel'
-    ){ 
-      setState(() {
-        this._resultado = 'Você venceu!';
-            });
-    } else if (
-      escolhaOponente == 'pedra' && escolhaUsuario == 'tesoura' ||
-      escolhaOponente == 'papel' && escolhaUsuario == 'pedra' ||
-      escolhaOponente == 'tesoura' && escolhaUsuario == 'papel'
-    ){
-      setState(() {
-        this._resultado = 'Você perdeu...';
-            });
-    } else {
-      setState(() {
-        this._resultado = 'Empate...';
-            });
+    if( 
+      escolhaUsuario == 'pedra' &&  escolhaOponente == 'tesoura' ||
+      escolhaUsuario == 'papel' &&  escolhaOponente == 'pedra' ||
+      escolhaUsuario == 'tesoura' &&  escolhaOponente == 'papel'
+    ) {
+      this._resultado = 'Você venceu!';
+    } else if(
+      escolhaOponente == 'pedra' &&  escolhaUsuario == 'tesoura' ||
+      escolhaOponente == 'papel' &&  escolhaUsuario == 'pedra' ||
+      escolhaOponente == 'tesoura' &&  escolhaUsuario == 'papel'
+    ) {
+      this._resultado = 'Você perdeu...' ;
     }
+      else {
+      this._resultado = 'Empatou!';
+      }
 
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text('Jo Ken Po'),
-      ),
-      
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.green,
+          title: Text('Jo-Ken-Po')
+        ),
 
-          Padding(
-            padding: EdgeInsets.only(top: 32, bottom: 16),
-            child: Text('Escolha do adversário:',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-
-          Image(image: this._escolhaOponente,),
-
-          Padding(
-            padding: EdgeInsets.only(top: 32, bottom: 16),
-            child: Text(this._resultado, //Texto de resultado
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
+        body: Center(
+          child: Column(
             children: <Widget>[
-              GestureDetector(
-                onTap: () => _opcaoSelecionada('pedra'),
-                child: Image.asset('images/pedra.png', height: 110),
+              Container(
+                padding: EdgeInsets.only(top: 15),
+                margin: EdgeInsets.only(bottom: 15),
+                child: Text('Escolha do adversário:',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  )
+                ),
               ),
-              GestureDetector(
-                onTap: () => _opcaoSelecionada('papel'),
-                child: Image.asset('images/papel.png', height: 110),
+
+              SizedBox(
+                width: 105,
+                height: 105,
+                child: FlatButton(
+                  padding: EdgeInsets.all(16.0),
+                  child: Image(image: this._escolhaOponente,),
+                  shape: CircleBorder(
+                    side: BorderSide(color: Colors.black54)
+                  ),
+                  onPressed: null,
+                ),
               ),
-              GestureDetector(
-                onTap: () => _opcaoSelecionada('tesoura'),
-                child: Image.asset('images/tesoura.png', height: 110),
+
+              Container(
+                margin: EdgeInsets.only(top: 15, bottom: 15),
+                child: Text(_resultado,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  )
+                ),
               ),
-            ],
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  
+                  SizedBox(
+                    width: 105,
+                    height: 105,
+                    child: FlatButton(
+                      padding: EdgeInsets.all(16.0),
+                      child: Image.asset('images/rock.png'),
+                      shape: CircleBorder(
+                        side: BorderSide(color: Colors.black54)
+                      ),
+                      onPressed: () => opcaoSelecionada('pedra'),
+                    ),
+                  ),
+
+                  SizedBox(width: 10,),
+
+                  SizedBox(
+                    width: 105,
+                    height: 105,
+                    child: FlatButton(
+                      padding: EdgeInsets.all(16.0),
+                      child: Image.asset('images/paper.png'),
+                      shape: CircleBorder(
+                        side: BorderSide(color: Colors.black54)
+                      ),
+                      onPressed:  () => opcaoSelecionada('papel'),
+                    ),
+                  ),
+
+                  SizedBox(width: 10,),
+
+                  SizedBox(
+                    width: 105,
+                    height: 105,
+                    child: FlatButton(
+                      padding: EdgeInsets.all(16.0),
+                      child: Image.asset('images/scissors.png'),
+                      shape: CircleBorder(
+                        side: BorderSide(color: Colors.black54)
+                      ),
+                      onPressed:  () => opcaoSelecionada('tesoura'),
+                    ),
+                  ),
+                ],
+              )
+            ]
           )
-        ],
+        )
       ),
     );
   }

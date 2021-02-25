@@ -57,6 +57,7 @@ flutter:
     - images/pedra.png
     - images/papel.png
     - images/tesoura.png
+    - images/default.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
